@@ -8,6 +8,7 @@ from ..joint.conversion import (
     )
 
 from bilby.gw.likelihood import GravitationalWaveTransient, ROQGravitationalWaveTransient
+from bilby.gw.likelihood.multiband import MBGravitationalWaveTransient 
 from bilby.core.likelihood import Likelihood
 from bilby.core.prior import Interped
 
@@ -90,12 +91,14 @@ class GravitationalWaveTransientLikelihoodwithEOS(Likelihood):
         - "geocent"/"geocenter": sample in the time at the Earth's center,
           this is the default
         - e.g., "H1": sample in the time of arrival at H1
-
+    reference_chirp_mass: float, optional                                                                                                                                           
+        A reference chirp mass for determining the frequency banding. This is set to prior minimum of chirp mass if                                                                
+        not specified. Hence a CBCPriorDict object needs to be passed to priors when this parameter is not specified.
     """
 
     def __init__(self, interferometers, waveform_generator,
                  eos_path, Neos, eos_weight_path, binary_type, gw_likelihood_type,
-                 priors, with_eos=True,
+                 priors, with_eos=True, reference_chirp_mass=None,
                  roq_weights=None, roq_params=None, roq_scale_factor=None,
                  time_marginalization=False, distance_marginalization=False,
                  phase_marginalization=False, distance_marginalization_lookup_table=None,
@@ -143,6 +146,10 @@ class GravitationalWaveTransientLikelihoodwithEOS(Likelihood):
             gw_likelihood_kwargs.update(dict(weights=roq_weights, roq_params=roq_params,
                                              roq_scale_factor=roq_scale_factor))
             GWLikelihood = ROQGravitationalWaveTransient(**gw_likelihood_kwargs)
+
+        elif gw_likelihood_type == 'MBGravitationalWaveTransient':
+            gw_likelihood_kwargs.update(dict(reference_chirp_mass = reference_chirp_mass))
+            GWLikelihood = MBGravitationalWaveTransient(**gw_likelihood_kwargs)
 
         super(GravitationalWaveTransientLikelihoodwithEOS, self).__init__(parameters={})
         self.parameter_conversion = parameter_conversion
