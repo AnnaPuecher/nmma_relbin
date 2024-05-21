@@ -92,9 +92,9 @@ def multibanding_likelihood_kwargs(args):
     Return the kwargs required to run with multibanding likelihood
     """
 
-        kwargs = dict(
+    kwargs = dict(
         reference_chirp_mass = args.reference_chirp_mass
-        )
+    )
 
     return kwargs
     
