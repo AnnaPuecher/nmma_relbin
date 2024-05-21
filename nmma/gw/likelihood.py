@@ -148,6 +148,8 @@ class GravitationalWaveTransientLikelihoodwithEOS(Likelihood):
             GWLikelihood = ROQGravitationalWaveTransient(**gw_likelihood_kwargs)
 
         elif gw_likelihood_type == 'MBGravitationalWaveTransient':
+            gw_likelihood_kwargs.pop("time_marginalization", None)
+            gw_likelihood_kwargs.pop("jitter_time", None)
             gw_likelihood_kwargs.update(dict(reference_chirp_mass = reference_chirp_mass))
             GWLikelihood = MBGravitationalWaveTransient(**gw_likelihood_kwargs)
 

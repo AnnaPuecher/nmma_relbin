@@ -224,6 +224,10 @@ def _add_Hubble_settings_to_parser(parser):
         "--Hubble-weight", type=str, help="Path to the precalculated Hubble weighting"
     )
 
+    H0_input_parser.add(
+        "--reference-chirp-mass", type=float, help="Reference chirp mass value for multibanding likelihood"
+    )
+
     return parser
 
 
@@ -437,4 +441,5 @@ def _add_misc_settings_to_parser(parser):
         action="store_true",
         help="If true, backup checkpoint before overwriting (ending in '.bk').",
     )
+
     return parser
