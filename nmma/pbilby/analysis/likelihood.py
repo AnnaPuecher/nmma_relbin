@@ -91,9 +91,18 @@ def multibanding_likelihood_kwargs(args):
     """
     Return the kwargs required to run with multibanding likelihood
     """
-
+    
+    if hasattr(args, "likelihood_multiband_weights"):
+        weights = args.likelihood_multiband_weights
+    elif "weight_file" in args.meta_data:
+        weights = args.meta_data["weight_file"]
+        logger.info(f"Loading multiband weights from {weights}")
+    else:
+        weights = None
+        logger.info("No multiband weights found, these will be calculated now")
+        
     kwargs = dict(
-        reference_chirp_mass = args.reference_chirp_mass
+        weights=weights,reference_chirp_mass = args.reference_chirp_mass
     )
 
     return kwargs
