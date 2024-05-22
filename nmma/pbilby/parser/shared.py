@@ -39,6 +39,7 @@ def _create_base_nmma_parser(sampler="dynesty"):
     base_parser = _add_em_settings_to_parser(base_parser)
     base_parser = _add_eos_settings_to_parser(base_parser)
     base_parser = _add_Hubble_settings_to_parser(base_parser)
+    base_parser = _add_likelihood_settings_to_parser(base_parser)
     base_parser = _add_misc_settings_to_parser(base_parser)
     return base_parser
 
@@ -54,6 +55,7 @@ def _create_base_nmma_gw_parser(sampler="dynesty"):
         base_parser = _add_dynesty_settings_to_parser(base_parser)
     base_parser = _add_eos_settings_to_parser(base_parser)
     base_parser = _add_Hubble_settings_to_parser(base_parser)
+    base_parser = _add_likelihood_settings_to_parser(base_parser)
     base_parser = _add_misc_settings_to_parser(base_parser)
     return base_parser
 
@@ -224,7 +226,11 @@ def _add_Hubble_settings_to_parser(parser):
         "--Hubble-weight", type=str, help="Path to the precalculated Hubble weighting"
     )
 
-    H0_input_parser.add(
+    return parser
+
+def _add_likelihood_settings_to_parser(parser):
+    likelihood_group = parser.add_argument_group(title="Likelihood Settings")
+    likelihood_group.add(
         "--reference-chirp-mass", type=float, help="Reference chirp mass value for multibanding likelihood"
     )
 
